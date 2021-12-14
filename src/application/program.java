@@ -1,32 +1,42 @@
 package application;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Cliente;
 import entities.ContaCorrente;
+import entities.Operacoes;
 
 public class program {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		
 		Scanner scan = new Scanner(System.in);
 		Locale.setDefault(Locale.US);
+		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		
-		ContaCorrente cc = new ContaCorrente("Banco Nacional");
+		
+		ContaCorrente cc = new ContaCorrente(new Date(), "Banco Nacional");
+		System.out.print(cc.imprimir());
 		
 		Cliente[] cliente = new Cliente[2];
-        
+		
+		System.out.print("Date (DD/MM/YYYT): ");
+		Date horaOperacao = sdf.parse(scan.next());
+        scan.nextLine();
 		 for(int i = 0; i < cliente.length; i++) {
-			System.out.println(cc.getNomeBanco());
+			 
 			System.out.print("Digite nome: ");
 			String nome = scan.nextLine();
 			
 			System.out.print("Digite numero da conta: ");
 		    int num = scan.nextInt();
-		 
+		    scan.nextLine();
 			System.out.print("Telefone: ");
-			int tel = scan.nextInt();
+			String tel = scan.nextLine();
 			
 			System.out.print("Digite valor do deposito: ");
 			double deposito = scan.nextDouble();
@@ -35,8 +45,10 @@ public class program {
 			double saque = scan.nextDouble();
 			
 			scan.nextLine();
-			Cliente c = new Cliente(nome, num, tel, deposito, saque);
+			Operacoes op = new Operacoes(horaOperacao, deposito, saque);
+			Cliente c = new Cliente(nome, num, tel, op);
 		    cliente[i] = c;
+		    
 		   
 			}
 			cc.setCliente(cliente);
@@ -50,7 +62,7 @@ public class program {
 			scan.nextLine();
 			*/
 		
-		cc.ImprimirInfo();
+		    cc.ImprimirInfo();
 		
 	}
 
