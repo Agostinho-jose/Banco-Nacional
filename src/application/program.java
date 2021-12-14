@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
 import entities.Cliente;
 import entities.ContaCorrente;
 import entities.Operacoes;
@@ -22,11 +24,12 @@ public class program {
 		ContaCorrente cc = new ContaCorrente(new Date(), "Banco Nacional");
 		System.out.print(cc.imprimir());
 		
-		Cliente[] cliente = new Cliente[2];
-		
 		System.out.print("Date (DD/MM/YYYT): ");
 		Date horaOperacao = sdf.parse(scan.next());
         scan.nextLine();
+		
+		Cliente[] cliente = new Cliente[2];
+	
 		 for(int i = 0; i < cliente.length; i++) {
 			 
 			System.out.print("Digite nome: ");

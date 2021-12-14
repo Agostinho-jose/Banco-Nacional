@@ -10,15 +10,16 @@ public class ContaCorrente {
 	private String nomeBanco;
 	private Cliente[] cliente;
 	
+	public ContaCorrente() {}
+	
 
-	//public ContaCorrente() {}
-	
 	public ContaCorrente(Date momento, String nomeBanco) {
-	
+		super();
 		this.momento = momento;
 		this.nomeBanco = nomeBanco;
 		
 	}
+
 
 	public Date getMomento() {
 		return momento;
@@ -43,7 +44,7 @@ public class ContaCorrente {
 	public void setCliente(Cliente[] cliente) {
 		this.cliente = cliente;
 	}
-	
+
 	public String imprimir() {
 		return "Data: ("+ sdf.format(momento) + ")" + "\nBanco: " + this.getNomeBanco() + "\n";
 	}

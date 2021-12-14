@@ -12,8 +12,7 @@ public class Operacoes {
 	private double limite;
 
 	public Operacoes() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
