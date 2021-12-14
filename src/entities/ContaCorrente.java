@@ -10,6 +10,7 @@ public class ContaCorrente {
 	private String nomeBanco;
 	private Cliente[] cliente;
 	
+	
 	public ContaCorrente() {}
 	
 
@@ -17,9 +18,8 @@ public class ContaCorrente {
 		super();
 		this.momento = momento;
 		this.nomeBanco = nomeBanco;
-		
+	
 	}
-
 
 	public Date getMomento() {
 		return momento;

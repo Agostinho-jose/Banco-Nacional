@@ -6,11 +6,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
 import entities.Cliente;
 import entities.ContaCorrente;
 import entities.Operacoes;
+import entities.Status;
 
 public class program {
 
@@ -19,7 +18,6 @@ public class program {
 		Scanner scan = new Scanner(System.in);
 		Locale.setDefault(Locale.US);
 		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
-		
 		
 		ContaCorrente cc = new ContaCorrente(new Date(), "Banco Nacional");
 		System.out.print(cc.imprimir());
@@ -46,10 +44,15 @@ public class program {
 		
 			System.out.print("Digite valor do saque: ");
 			double saque = scan.nextDouble();
-			
 			scan.nextLine();
+			
+			System.out.print("Digite status: ");
+		     Status status = Status.valueOf(scan.next());
+		     scan.nextLine();
+		     
+		     
 			Operacoes op = new Operacoes(horaOperacao, deposito, saque);
-			Cliente c = new Cliente(nome, num, tel, op);
+			Cliente c = new Cliente(nome, num, tel, op, status);
 		    cliente[i] = c;
 		    
 		   
@@ -67,6 +70,7 @@ public class program {
 		
 		    cc.ImprimirInfo();
 		
+		    scan.close();
 	}
 
 }
