@@ -1,14 +1,16 @@
 package entities;
 
-import java.text.SimpleDateFormat;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Conta {
 
 	private static int contador;
 	
-	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	private Date diaMovimento;
+	private static DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private LocalDate diaMovimento;
 	private double limite;
 	private int numero;
     private double saldo;
@@ -19,7 +21,7 @@ public class Conta {
 		this.limite = 2000;
 	}
 	
-	public Conta(Date diaMovimento, int numero, double saldo, Cliente titular) {
+	public Conta(LocalDate diaMovimento, int numero, double saldo, Cliente titular) {
 		super();
 		this.diaMovimento = diaMovimento;
 		this.numero = numero;
@@ -47,11 +49,11 @@ public class Conta {
 		return contador;
 	}
 
-	public Date getDiaMovimento() {
+	public LocalDate getDiaMovimento() {
 		return diaMovimento;
 	}
 
-	public void setDiaMovimento(Date diaMovimento) {
+	public void setDiaMovimento(LocalDate diaMovimento) {
 		this.diaMovimento = diaMovimento;
 	}
 
@@ -95,7 +97,7 @@ public class Conta {
 	
 	public String imprimirInfo() {
 	
-		String info = "Data: " + sdf.format(diaMovimento) + "\n";
+		String info = "Data: " + diaMovimento.format(dataFormatada) + "\n";
 		
 		       if(titular != null) {
 			   info += "Nome: " + titular.getNome() + "\n"; 
