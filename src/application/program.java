@@ -1,10 +1,9 @@
 package application;
 
-import java.text.ParseException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.InputMismatchException;
+
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -56,7 +55,7 @@ public class program {
 				c.sacar(saque);
 
 				System.out.println("Dados conta 1: ");
-				System.out.println(c.imprimirInfo());
+				System.out.println(c);
 			}
 
 			scan.close();

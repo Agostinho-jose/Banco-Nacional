@@ -100,7 +100,7 @@ public class Conta {
 		}
 	}
 	
-	public String imprimirInfo() {
+	/*public String imprimirInfo() {
 	
 		String info = "Data: " + diaMovimento.format(dataFormatada) + "\n";
 		
@@ -113,6 +113,23 @@ public class Conta {
 		       info += "Limite: " + this.limite;
 		       
 		       return info;
+	}*/
+
+	@Override
+	public String toString() {
+		
+		String info = "Data: " + diaMovimento.format(dataFormatada) + "\n";
+		
+	       if(titular != null) {
+		   info += "Nome: " + titular.getNome() + "\n"; 
+ 	   info += "cpf: " + titular.mostra_cpf_correto() + "\n";
 	}
+	       info += "Número da conta: " + this.getNumero() + "\n";
+	       info += "Saldo: " + this.getSaldo() + "\n";
+	       info += "Limite: " + this.limite;
+	       
+	       return info;
+	}
+	
 
 }
