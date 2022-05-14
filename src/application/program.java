@@ -3,74 +3,71 @@ package application;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Cliente;
-import entities.ContaCorrente;
-import entities.Operacoes;
-import entities.Status;
+import entities.Conta;
+
+import exception.DominioExcecoes;
 
 public class program {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) {
 		
 		Scanner scan = new Scanner(System.in);
 		Locale.setDefault(Locale.US);
 		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 		
-		ContaCorrente cc = new ContaCorrente(new Date(), "Banco Nacional");
-		System.out.print(cc.imprimir());
+		Conta c = new Conta();
+		Cliente cliente = new Cliente();
 		
-		System.out.print("Date (DD/MM/YYYT): ");
-		Date horaOperacao = sdf.parse(scan.next());
-        scan.nextLine();
+		try {
+	    System.out.print("Entre com titular: ");	
+		String nome = scan.nextLine();
+		cliente.setNome(nome);
 		
-		Cliente[] cliente = new Cliente[2];
-	
-		 for(int i = 0; i < cliente.length; i++) {
-			 
-			System.out.print("Digite nome: ");
-			String nome = scan.nextLine();
+		System.out.print("Entre com CPF: ");	
+		String cpf = scan.nextLine();
+		cliente.setCpf(cpf);
+		cliente.calc_primeiro_digito();
+		cliente.cal_segundo_digito();
+		
+		c.setTitular(cliente);
+		if(cliente.verificadorCPF() == true) {
 			
-			System.out.print("Digite numero da conta: ");
-		    int num = scan.nextInt();
-		    scan.nextLine();
-			System.out.print("Telefone: ");
-			String tel = scan.nextLine();
+			System.out.print("Entre com data: ");
 			
-			System.out.print("Digite valor do deposito: ");
+			Date data = sdf.parse(scan.next());
+			c.setDiaMovimento(data);
+			
+			System.out.print("Entre com o numero da conta: ");
+			int numero = scan.nextInt();
+			c.setNumero(numero);
+			
+			
+			System.out.print("Digite valor deposito: ");
 			double deposito = scan.nextDouble();
+			c.depositar(deposito);
 		
-			System.out.print("Digite valor do saque: ");
-			double saque = scan.nextDouble();
-			scan.nextLine();
 			
-			System.out.print("Digite status: ");
-		     Status status = Status.valueOf(scan.next());
-		     scan.nextLine();
-		     
-		     
-			Operacoes op = new Operacoes(horaOperacao, deposito, saque);
-			Cliente c = new Cliente(nome, num, tel, op, status);
-		    cliente[i] = c;
-		    
-		   
-			}
-			cc.setCliente(cliente);
-			/*System.out.print("Digite valor do deposito: ");
-			double deposito = scan.nextDouble();
-			cc.setSaldo(deposito);
-			cc.conferiDeposito(deposito);
-			System.out.print("Digite valor do saque: ");
+			System.out.print("Digite valor saque: ");
 			double saque = scan.nextDouble();
-			cc.conferiSaque(saque);
-			scan.nextLine();
-			*/
+			c.sacar(saque);
+			
+			
+			System.out.println("Dados conta 1: ");
+			System.out.println(c.imprimirInfo());
+		}
 		
-		    cc.ImprimirInfo();
-		
-		    scan.close();
-	}
-
+		scan.close();
+ }
+  catch(ParseException e) {
+	  System.out.println("Formato invalido");
+  }
+  catch( DominioExcecoes e) {
+	  System.out.println("Error" + e.getMessage());
+  }
+ }
 }
