@@ -5,12 +5,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import exception.DominioExcecoes;
+
 public class Conta {
 
 	private static int contador;
 	
 	private static DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private LocalDate diaMovimento;
+	private LocalDate hoje = LocalDate.now();
 	private double limite;
 	private int numero;
     private double saldo;
@@ -22,11 +25,11 @@ public class Conta {
 	}
 	
 	public Conta(LocalDate diaMovimento, int numero, double saldo, Cliente titular) {
-		super();
-		this.diaMovimento = diaMovimento;
-		this.numero = numero;
-		this.saldo = saldo;
-		this.titular = titular;
+			this.diaMovimento = diaMovimento;
+			this.numero = numero;
+			this.saldo = saldo;
+			this.titular = titular;
+		
 	}
 
 	public Cliente getTitular() {
@@ -54,6 +57,9 @@ public class Conta {
 	}
 
 	public void setDiaMovimento(LocalDate diaMovimento) {
+		if(diaMovimento.isAfter(hoje)) {
+			throw new DominioExcecoes("Erro na data: posterior data atual");
+		}
 		this.diaMovimento = diaMovimento;
 	}
 
@@ -77,21 +83,20 @@ public class Conta {
 		this.numero = numero;
 	}
 
-	public boolean depositar(double deposito) {
+	public void depositar(double deposito) {
 		if(deposito < 0) {
-			return false;
+			throw new DominioExcecoes("Erro de deposito: O valor inválido");
 		} else {
 			this.saldo += deposito;
-			return true;
+			
 		}	
 	}
 	
-	public boolean sacar(double saque ){
+	public void sacar(double saque ){
 		if(saque > this.getSaldo() || saque < 0 || this.getLimite() < saque) {
-			return false;
+			throw new DominioExcecoes("Erro de saque: O valor inválido");
 		} else {
 			this.saldo -= saque;
-			return true;
 		}
 	}
 	

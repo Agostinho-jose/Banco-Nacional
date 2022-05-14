@@ -61,9 +61,9 @@ public class program {
 
 			scan.close();
 		} catch (DominioExcecoes e) {
-			System.out.println("Error" + e.getMessage());
+			System.out.println(e.getMessage());
 		} catch (RuntimeException e) {
-			System.out.println("Valor incorreto");
+			System.out.println("Valor inválido");
 		}
 	}
 }
