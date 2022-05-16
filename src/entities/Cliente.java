@@ -1,25 +1,40 @@
 package entities;
 
-public class Cliente {
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import exception.DominioExcecoes;
+
+public class Cliente extends BancoNacional{
 	
+	private static DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private String nome;
 	private String cpf;
 	private String cpfCorreto;
-	private String email;
+	private Integer senha;
 	
-	private int soma = 0;
-	private int primeiro_digito = 0, segundo_digito = 0;
+	private Integer soma = 0;
+	private Integer primeiro_digito = 0, segundo_digito = 0;
 	
 	public Cliente() {
-	
+	this.senha = 123;
 	}
 	
-	public Cliente(String nome, String cpf, String cpfCorreto, String email) {
-		super();
+	public Cliente(LocalDate diaMovimento, Double limite, Integer numero, Double saldo, String nome, String cpf,
+			String cpfCorreto, Integer senha) {
+		super(diaMovimento, limite, numero, saldo);
 		this.nome = nome;
 		this.cpf = cpf;
 		this.cpfCorreto = cpfCorreto;
-		this.email = email;
+		this.senha = senha;
+	}
+
+	public Integer getSenha() {
+		return senha;
+	}
+
+	public void setSenha(Integer senha) {
+		this.senha = senha;
 	}
 
 	public String getCpfCorreto() {
@@ -46,14 +61,6 @@ public class Cliente {
 		this.cpf = cpf;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	 public void calc_primeiro_digito(){
 	    soma = 0;
 	    int i = 0, j = 10;
@@ -109,4 +116,52 @@ public class Cliente {
 	               s += cpfCorreto.substring(0, 9) + "-" + cpfCorreto.substring(9, 11);
 	        return s;
 	    }
+	    
+	    public boolean senha(int senha) {
+	    	if(this.getSenha().equals(senha)) {
+	    		return true;
+	    	}
+	    	return false;
+	    }
+
+		@Override
+		public void depositar(double deposito) {
+			if(deposito < 0) {
+				throw new DominioExcecoes("Erro de deposito: O valor inválido");
+			} else {
+				this.setSaldo(this.getSaldo() + deposito);
+		    }
+		}
+
+		@Override
+		public void sacar(double saque) {
+			if(saque > this.getSaldo() || saque < 0 || this.getLimite() < saque) {
+				throw new DominioExcecoes("Erro de saque: O valor inválido");
+			} else {
+				this.setSaldo(getSaldo() - saque);
+		    }
+		}
+		
+		@Override
+		public void transferir(BancoNacional destino, double valor) {
+			
+			 this.setSaldo(getSaldo() - valor);;
+			 destino.setSaldo(this.getSaldo() + valor );
+			
+		}
+		
+		@Override
+		public String toString() {
+			
+			   String info = "Data: " + this.getDiaMovimento().format(dataFormatada) + "\n";    
+			   info += "Nome: " +   "\n"; 
+	 	       info += "cpf: " + mostra_cpf_correto() + "\n";
+		       info += "Número da conta: " + this.getNumero() + "\n";
+		       info += "Saldo: " + this.getSaldo() + "\n";
+		       info += "Limite: " + this.getLimite() + "\n";
+		      
+		       
+		       return info;
+		}
+
 }
