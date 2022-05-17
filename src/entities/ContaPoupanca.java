@@ -10,16 +10,29 @@ public class ContaPoupanca extends BancoNacional{
 	private static DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private LocalDate dataPoupanca;
 	private LocalDate dataAtual;
+	private Double rendimentoMes;
 
 	public ContaPoupanca() {
 		super();
 		this.dataAtual = LocalDate.now();
 	}
 
-	public ContaPoupanca(Integer numero, Double saldo, LocalDate dataPoupanca) {
+
+	public ContaPoupanca(Integer numero, Double saldo, LocalDate dataPoupanca, Double rendimentoMes) {
 		super(numero, saldo);
 		this.dataPoupanca = dataPoupanca;
+		this.rendimentoMes = rendimentoMes;
 	}
+
+	public Double getRendimentoMes() {
+		return rendimentoMes;
+	}
+
+
+	public void setRendimentoMes(Double rendimentoMes) {
+		this.rendimentoMes = rendimentoMes;
+	}
+
 
 	public LocalDate getDataAtual() {
 		return dataAtual;
@@ -65,9 +78,9 @@ public class ContaPoupanca extends BancoNacional{
 		
 	}
 	
-	public void calcularNovoSaldo(LocalDate data){
-        double rendimento = this.getSaldo() * 0.02;
-        if(data.equals(this.getDataAtual())){
+	public void calcularNovoSaldo(){
+        double rendimento = this.getSaldo() * this.getRendimentoMes();
+        if(this.getDataPoupanca().equals(this.getDataAtual())){
             this.setSaldo(this.getSaldo() + rendimento);
         } else {
         	 this.getSaldo();

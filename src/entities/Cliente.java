@@ -17,17 +17,16 @@ public class Cliente extends BancoNacional {
 	private Integer primeiro_digito = 0, segundo_digito = 0;
 
 	public Cliente() {
-		this.senha = 7;
-		this.setSaldo(0.0);
+		
 	}
 
-	public Cliente(String nome, String cpf, String cpfCorreto, Integer senha) {
-		super();
+	public Cliente(Integer numero, Double saldo, String nome, String cpf) {
+		super(numero, saldo);
 		this.nome = nome;
 		this.cpf = cpf;
-		this.cpfCorreto = cpfCorreto;
-		this.senha = senha;
+		this.senha = 7;
 	}
+
 
 	public Integer getSenha() {
 		return senha;
@@ -154,12 +153,12 @@ public class Cliente extends BancoNacional {
 	@Override
 	public String toString() {
 
-		String info = "Nome: " + "\n";
+		String info = "Cliente: " + "\n";
+		info += "Nome: " + this.getNome() + "\n";
 		info += "cpf: " + mostra_cpf_correto() + "\n";
 		info += "Número da conta: " + this.getNumero() + "\n";
 		info += "Saldo: " + this.getSaldo() + "\n";
 		
-
 		return info;
 	}
 }

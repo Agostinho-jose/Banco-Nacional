@@ -28,10 +28,19 @@ public class program {
 			/*
 			 * System.out.print("Entre com CPF: "); String cpf = scan.nextLine();
 			 */
-			Cliente cliente = new Cliente();
-			cliente.setNumero(379);
+			//Cliente cliente = new Cliente();
+			//System.out.print("Entre com titular da conta: ");
+			//String titular = scan.nextLine();
+			
+			//System.out.print("Entre com número da conta: ");
+			//int numero = scan.nextInt();
+			scan.nextLine();
+			//System.out.print("Entre com CPF: "); 
+			//String cpf = scan.nextLine();
 			// validação cpf
-			cliente.setCpf("04999474603");
+			
+			Cliente cliente = new Cliente(678, 5000.0, "Paulo Pontes", "04999474603" );
+			//cliente.setCpf("04999474603");
 			cliente.calc_primeiro_digito();
 			cliente.cal_segundo_digito();
 
@@ -41,16 +50,7 @@ public class program {
 				int senha = scan.nextInt();
 
 				if (cliente.senha(senha)) {
-
-					// System.out.print("Entre com o numero da conta: ");
-					// int numero = scan.nextInt();
-
-					System.out.print("Digite valor deposito: ");
-					double deposito = scan.nextDouble();
-				
 					
-					cliente.depositar(deposito);
-					System.out.println("Dados Conta Cliente: ");
 					System.out.println(cliente);
 
 					System.out.print("Conta Poupança: [1] ; Conta Conta Corrente: [2]: ");
@@ -62,33 +62,34 @@ public class program {
 						cp.setSaldo(cliente.getSaldo());
 						LocalDate dataPoupanca = LocalDate.parse("17/05/2022", dataFormatada);
 						cp.setDataPoupanca(dataPoupanca);
-						cp.calcularNovoSaldo(dataPoupanca);
+						System.out.println("Valor da porcentagem ao mes: ");
+						double porcentagem = scan.nextDouble();
+						cp.setRendimentoMes(porcentagem );
+						cp.calcularNovoSaldo();
 						System.out.println("Dados Conta Poupança: ");
 						System.out.println(cp);
 						break;
 					
 					case 2:
 						
+						System.out.println("CONTA CORRENTE");
+						ContaCorrente cc = new ContaCorrente();
+						cc.setSaldo(cliente.getSaldo());
+						System.out.println("Valor deposito conta corrente: ");
+						double depositoCC = scan.nextDouble();
+					    cc.depositar(depositoCC);
+						
+					    System.out.println("Valor saque conta corrente: ");
+						double sacarCC = scan.nextDouble();
+						//cc.sacar(sacarCC);
 						ContaEspecial ce = new ContaEspecial();
-						ce.setSaldo(cliente.getSaldo());
-						double l = ce.getLimite();
-						if (ce.textLimite()) {// se saque maior q saldo e menor q limite true entra cheque especial;
-							System.out.println("CONTA CORRENTE");
-							ContaCorrente cc = new ContaCorrente();
-							cc.setSaldo(cliente.getSaldo());
-							System.out.println("Valor deposito conta corrente: ");
-							double depositoCC = scan.nextDouble();
-						    cc.depositar(depositoCC);
-							
-						    System.out.println("Valor saque conta corrente: ");
-							double sacarCC = scan.nextDouble();
+						ce.setSaldo(cc.getSaldo());
+						System.out.println(ce.getSaldo());
+						if (ce.textLimite(sacarCC)) {// se saque maior q saldo e menor q limite true entra cheque especial;
 							cc.sacar(sacarCC);
 							System.out.println(cc);
 								
 						} else {
-							System.out.println("Valor deposito conta especial: ");
-							double depositoCE = scan.nextDouble();
-						    ce.depositar(depositoCE);
 							System.out.println("Valor saque conta especial: ");
 							double sacarEP = scan.nextDouble();
 							ce.sacar(sacarEP);

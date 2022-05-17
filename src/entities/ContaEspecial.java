@@ -18,7 +18,7 @@ public class ContaEspecial extends BancoNacional{
 	}
 
 	public Double getLimite() {
-		return limite;
+		return limite + this.getSaldo() ;
 	}
 
 	public void setLimite(Double limite) {
@@ -36,20 +36,21 @@ public class ContaEspecial extends BancoNacional{
 
 	@Override
 	public void sacar(double saque) {
-		if( saque < 0) {
-			throw new DominioExcecoes("Erro de saque: Valor inválido");
+		if( saque < 0 || saque > this.getLimite() ) {
+			throw new DominioExcecoes("Erro de saque: Valor do saque: $" + saque + "\n"
+					+ "Limite: $" + this.getLimite());
 		} else {
-			this.setSaldo(getSaldo() - saque);
+			this.setSaldo(this.getSaldo() - saque);
 	    }
 	}
 	
-	public boolean textLimite() {
+	public boolean textLimite(double valor) {
 		
       //double limite = this.getSaldo() + this.getLimite();
 		
-		if(this.getSaldo() < this.getLimite()){
+		if(valor > this.getLimite()){
 			return true;
-		}
+		} 
 		
 		//throw new DominioExcecoes("Conta sem limite: " + this.getLimite());
 	     return false;   
