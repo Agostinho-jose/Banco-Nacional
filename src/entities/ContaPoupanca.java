@@ -16,11 +16,10 @@ public class ContaPoupanca extends BancoNacional{
 		this.dataAtual = LocalDate.now();
 	}
 
-	public ContaPoupanca(LocalDate diaMovimento, Double limite, Integer numero, Double saldo, LocalDate dataPoupanca) {
-		super(diaMovimento, limite, numero, saldo);
+	public ContaPoupanca(Integer numero, Double saldo, LocalDate dataPoupanca) {
+		super(numero, saldo);
 		this.dataPoupanca = dataPoupanca;
 	}
-	
 
 	public LocalDate getDataAtual() {
 		return dataAtual;
@@ -32,6 +31,9 @@ public class ContaPoupanca extends BancoNacional{
 	}
 
 	public void setDataPoupanca(LocalDate dataPoupanca) {
+		if(dataPoupanca.isAfter(dataAtual)) {
+			throw new DominioExcecoes("Erro na data: posterior data atual");
+		}
 		this.dataPoupanca = dataPoupanca;
 	}
 
@@ -47,7 +49,7 @@ public class ContaPoupanca extends BancoNacional{
 	@Override
 	public void sacar(double saque) {
 		
-		if(saque > this.getSaldo() || saque < 0 || this.getLimite() < saque) {
+		if(saque > this.getSaldo() || saque < 0) {
 			throw new DominioExcecoes("Erro de saque: Valor inválido");
 		} else {
 			this.setSaldo(getSaldo() - saque);
@@ -75,8 +77,8 @@ public class ContaPoupanca extends BancoNacional{
 	@Override
 	public String toString() {
 		
-		String info = "Data atual: " + this.getDataAtual().format(dataFormatada) + "\n";
-		   info += "Data poupança: " + this.getDataPoupanca().format(dataFormatada) + "\n";    
+	String info = "Data atual: " + this.getDataAtual().format(dataFormatada) + "\n";
+		   info += "Data poupança rendimentos: " + this.getDataPoupanca().format(dataFormatada) + "\n";    
 		   info += "Conta Poupança:\n"; 
 	       info += "Saldo: " + this.getSaldo() + "\n";
 	      

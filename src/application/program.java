@@ -7,7 +7,8 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Cliente;
-
+import entities.ContaCorrente;
+import entities.ContaEspecial;
 import entities.ContaPoupanca;
 import exception.DominioExcecoes;
 
@@ -21,14 +22,14 @@ public class program {
 
 		try {
 
-			//System.out.print("Entre com número da conta: ");
-			//int numero = scan.nextInt();
+			// System.out.print("Entre com número da conta: ");
+			// int numero = scan.nextInt();
 
 			/*
 			 * System.out.print("Entre com CPF: "); String cpf = scan.nextLine();
 			 */
 			Cliente cliente = new Cliente();
-             cliente.setNumero(379);
+			cliente.setNumero(379);
 			// validação cpf
 			cliente.setCpf("04999474603");
 			cliente.calc_primeiro_digito();
@@ -40,43 +41,69 @@ public class program {
 				int senha = scan.nextInt();
 
 				if (cliente.senha(senha)) {
-					// System.out.print("Entre com data: ");
-					LocalDate data = LocalDate.parse("12/12/2021", dataFormatada);
-					cliente.setDiaMovimento(data);
 
 					// System.out.print("Entre com o numero da conta: ");
 					// int numero = scan.nextInt();
-				
 
 					System.out.print("Digite valor deposito: ");
 					double deposito = scan.nextDouble();
-					cliente.setLimite(1000.0);
-					cliente.setSaldo(deposito);
+				
+					
 					cliente.depositar(deposito);
-
-					// System.out.print("Digite valor saque cliente: ");
-					// double saque = scan.nextDouble();
-					//cliente.sacar(102.0);
-
-					ContaPoupanca cp = new ContaPoupanca();
-					cp.setSaldo(cliente.getSaldo());
-					//cp.depositar(100.0);
-					// System.out.print("Entre com data: ");
-					LocalDate dataPoupanca = LocalDate.parse("15/05/2022", dataFormatada);
-                    cp.setDataPoupanca(dataPoupanca);
-					cp.calcularNovoSaldo(dataPoupanca);
 					System.out.println("Dados Conta Cliente: ");
 					System.out.println(cliente);
 
-					System.out.println("Dados Conta Poupança: ");
-					System.out.println(cp);
+					System.out.print("Conta Poupança: [1] ; Conta Conta Corrente: [2]: ");
+					int tipo = scan.nextInt();
+
+					switch (tipo) {
+					case 1:
+						ContaPoupanca cp = new ContaPoupanca();
+						cp.setSaldo(cliente.getSaldo());
+						LocalDate dataPoupanca = LocalDate.parse("17/05/2022", dataFormatada);
+						cp.setDataPoupanca(dataPoupanca);
+						cp.calcularNovoSaldo(dataPoupanca);
+						System.out.println("Dados Conta Poupança: ");
+						System.out.println(cp);
+						break;
+					
+					case 2:
+						
+						ContaEspecial ce = new ContaEspecial();
+						ce.setSaldo(cliente.getSaldo());
+						double l = ce.getLimite();
+						if (ce.textLimite()) {// se saque maior q saldo e menor q limite true entra cheque especial;
+							System.out.println("CONTA CORRENTE");
+							ContaCorrente cc = new ContaCorrente();
+							cc.setSaldo(cliente.getSaldo());
+							System.out.println("Valor deposito conta corrente: ");
+							double depositoCC = scan.nextDouble();
+						    cc.depositar(depositoCC);
+							
+						    System.out.println("Valor saque conta corrente: ");
+							double sacarCC = scan.nextDouble();
+							cc.sacar(sacarCC);
+							System.out.println(cc);
+								
+						} else {
+							System.out.println("Valor deposito conta especial: ");
+							double depositoCE = scan.nextDouble();
+						    ce.depositar(depositoCE);
+							System.out.println("Valor saque conta especial: ");
+							double sacarEP = scan.nextDouble();
+							ce.sacar(sacarEP);
+							System.out.println(ce);
+						}
+
+						break;
+					 default:
+						 System.out.println("OPERAÇÃO INEXISTENTE");
+					}
 				}
 			}
-		} 
-		catch (DominioExcecoes e) {
+		} catch (DominioExcecoes e) {
 			System.out.println(e.getMessage());
-		} 
-		catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			System.out.println("Valor inválido");
 		}
 
