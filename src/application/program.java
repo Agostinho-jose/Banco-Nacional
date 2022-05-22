@@ -22,92 +22,89 @@ public class program {
 
 		try {
 
-			// System.out.print("Entre com número da conta: ");
-			// int numero = scan.nextInt();
-
-			/*
-			 * System.out.print("Entre com CPF: "); String cpf = scan.nextLine();
-			 */
-			//Cliente cliente = new Cliente();
-			//System.out.print("Entre com titular da conta: ");
-			//String titular = scan.nextLine();
 			
-			//System.out.print("Entre com número da conta: ");
-			//int numero = scan.nextInt();
-			scan.nextLine();
-			//System.out.print("Entre com CPF: "); 
-			//String cpf = scan.nextLine();
-			// validação cpf
+			ContaEspecial ce = new ContaEspecial();
+			ce.setLimite(1000.0);
 			
-			Cliente cliente = new Cliente(678, 5000.0, "Paulo Pontes", "04999474603" );
-			//cliente.setCpf("04999474603");
+			ContaPoupanca cp = new ContaPoupanca();
+			ContaCorrente cc = new ContaCorrente();
+		
+			Cliente cliente = new Cliente();
+			cliente.setSaldo(1000.0);
+			cliente.setAgencia(2387);
+			cliente.setNumero(33468375);
+			cliente.setNome("Fabricio Neto");
+			cliente.setCpf("04999474603");
 			cliente.calc_primeiro_digito();
 			cliente.cal_segundo_digito();
 
 			if (cliente.verificadorCPF()) {
-
 				System.out.print("Entre com senha: ");
 				int senha = scan.nextInt();
 
-				if (cliente.senha(senha)) {
-					
-					System.out.println(cliente);
+				if (cliente.autenticaSenhas(senha)) {
 
 					System.out.print("Conta Poupança: [1] ; Conta Conta Corrente: [2]: ");
 					int tipo = scan.nextInt();
-
+					scan.nextLine();
+					System.out.println(cliente);
+					
 					switch (tipo) {
 					case 1:
-						ContaPoupanca cp = new ContaPoupanca();
 						cp.setSaldo(cliente.getSaldo());
-						LocalDate dataPoupanca = LocalDate.parse("17/05/2022", dataFormatada);
+						LocalDate dataPoupanca = LocalDate.parse("20/05/2022", dataFormatada);
 						cp.setDataPoupanca(dataPoupanca);
 						System.out.println("Valor da porcentagem ao mes: ");
 						double porcentagem = scan.nextDouble();
-						cp.setRendimentoMes(porcentagem );
+						cp.setRendimentoMes(porcentagem);
 						cp.calcularNovoSaldo();
-						System.out.println("Dados Conta Poupança: ");
 						System.out.println(cp);
 						break;
-					
+
 					case 2:
 						
 						System.out.println("CONTA CORRENTE");
-						ContaCorrente cc = new ContaCorrente();
 						cc.setSaldo(cliente.getSaldo());
-						System.out.println("Valor deposito conta corrente: ");
-						double depositoCC = scan.nextDouble();
-					    cc.depositar(depositoCC);
+                        
 						
-					    System.out.println("Valor saque conta corrente: ");
-						double sacarCC = scan.nextDouble();
-						//cc.sacar(sacarCC);
-						ContaEspecial ce = new ContaEspecial();
+						System.out.println("Valor deposito conta corrente: ");
+						double deposito = scan.nextDouble();
+						cc.deposito(deposito);
+						
+						System.out.println("Valor saque conta corrente: ");
+					    double saque = scan.nextDouble();
+						
 						ce.setSaldo(cc.getSaldo());
-						System.out.println(ce.getSaldo());
-						if (ce.textLimite(sacarCC)) {// se saque maior q saldo e menor q limite true entra cheque especial;
-							cc.sacar(sacarCC);
-							System.out.println(cc);
-								
-						} else {
-							System.out.println("Valor saque conta especial: ");
-							double sacarEP = scan.nextDouble();
-							ce.sacar(sacarEP);
+						
+						//texte de saldo após deposito
+                        System.out.println("Saldo ce: " + ce.getSaldo());
+                        System.out.println("Saldo cc: " + cc.getSaldo());
+						
+                        if (ce.textarLimite(saque) == true) {
+							ce.sacar(saque);
 							System.out.println(ce);
+						} else {
+							cc.sacar(saque);
+							System.out.println(cc);
 						}
-
-						break;
-					 default:
-						 System.out.println("OPERAÇÃO INEXISTENTE");
+                        
+					    break;
+						default:
+							System.out.println("Opção indisponível");
 					}
-				}
+				}	
 			}
-		} catch (DominioExcecoes e) {
+		} 
+		
+		catch (DominioExcecoes e) {
 			System.out.println(e.getMessage());
-		} catch (RuntimeException e) {
+		}
+		
+		catch (RuntimeException e) {
 			System.out.println("Valor inválido");
 		}
-
+		
 		scan.close();
 	}
 }
+			

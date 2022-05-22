@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import exception.DominioExcecoes;
 
-public class ContaPoupanca extends BancoNacional{
+public class ContaPoupanca extends BancoNacional implements Contas{
  
 	private static DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private LocalDate dataPoupanca;
@@ -16,13 +16,14 @@ public class ContaPoupanca extends BancoNacional{
 		super();
 		this.dataAtual = LocalDate.now();
 	}
-
-
-	public ContaPoupanca(Integer numero, Double saldo, LocalDate dataPoupanca, Double rendimentoMes) {
-		super(numero, saldo);
+	
+	public ContaPoupanca(Integer numero, Double saldo, Double limite, Integer agencia, LocalDate dataPoupanca,
+			Double rendimentoMes) {
+		super(numero, saldo, limite, agencia);
 		this.dataPoupanca = dataPoupanca;
 		this.rendimentoMes = rendimentoMes;
 	}
+
 
 	public Double getRendimentoMes() {
 		return rendimentoMes;
@@ -50,34 +51,6 @@ public class ContaPoupanca extends BancoNacional{
 		this.dataPoupanca = dataPoupanca;
 	}
 
-	@Override
-	public void depositar(double deposito) {
-		if(deposito < 0) {
-			throw new DominioExcecoes("Erro de deposito: O valor inválido");
-		} else {
-			this.setSaldo(this.getSaldo() + deposito);
-	    }	
-	}
-
-	@Override
-	public void sacar(double saque) {
-		
-		if(saque > this.getSaldo() || saque < 0) {
-			throw new DominioExcecoes("Erro de saque: Valor inválido");
-		} else {
-			this.setSaldo(getSaldo() - saque);
-	    }
-		
-	}
-
-	@Override
-	public void transferir(BancoNacional destino, double valor) {
-		
-		this.setSaldo(getSaldo() - valor);;
-		 destino.setSaldo(this.getSaldo() + valor );
-		
-	}
-	
 	public void calcularNovoSaldo(){
         double rendimento = this.getSaldo() * this.getRendimentoMes();
         if(this.getDataPoupanca().equals(this.getDataAtual())){
@@ -86,14 +59,41 @@ public class ContaPoupanca extends BancoNacional{
         	 this.getSaldo();
         }
     }
+	
+	@Override
+	public void sacar(double valor) {
+		if(valor < 0) {
+			throw new DominioExcecoes("Erro de saque: Valor indisponivel");
+		} else {
+			this.setSaldo( this.getLimite() - valor);
+	    }	
+	}
+
+
+	@Override
+	public void deposito(double valor) {
+		if(valor < 0) {
+			throw new DominioExcecoes("Erro de deposito: Valor inválido");
+		} else {
+			this.setSaldo(this.getLimite() + valor);
+	    }	
+	}
+
+
+	@Override
+	public void transferir(BancoNacional conta, double valor) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 	@Override
 	public String toString() {
 		
-	String info = "Data atual: " + this.getDataAtual().format(dataFormatada) + "\n";
-		   info += "Data poupança rendimentos: " + this.getDataPoupanca().format(dataFormatada) + "\n";    
-		   info += "Conta Poupança:\n"; 
-	       info += "Saldo: " + this.getSaldo() + "\n";
+	String info = "***Conta Poupança***" + "\n";
+	       info += "Data atual: " + this.getDataAtual().format(dataFormatada) + "\n";
+		   info += "Data de rendimentos da poupança: " + this.getDataPoupanca().format(dataFormatada) + "\n";    
+		   info += "Saldo R$: " + String.format("%.2f", this.getSaldo()) + "\n";
 	      
 	       return info;
 	}
